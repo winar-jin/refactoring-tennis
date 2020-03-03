@@ -18,11 +18,11 @@ public class TennisGame1 implements TennisGame {
     }
 
     public String getScore() {
-        if (player1.getScore() == player2.getScore()) {
+        if (player1.getPoint() == player2.getPoint()) {
             return withSameScore();
         }
 
-        if (player1.getScore() >= 4 || player2.getScore() >= 4) {
+        if (player1.getPoint() >= 4 || player2.getPoint() >= 4) {
             return beyondScoreOf4();
         }
 
@@ -33,10 +33,10 @@ public class TennisGame1 implements TennisGame {
         StringBuilder score = new StringBuilder();
         int tempScore;
         for (int i = 1; i < 3; i++) {
-            if (i == 1) tempScore = player1.getScore();
+            if (i == 1) tempScore = player1.getPoint();
             else {
                 score.append("-");
-                tempScore = player2.getScore();
+                tempScore = player2.getPoint();
             }
             switch (tempScore) {
                 case 0:
@@ -58,7 +58,7 @@ public class TennisGame1 implements TennisGame {
 
     private String beyondScoreOf4() {
         StringBuilder score;
-        int minusResult = player1.getScore() - player2.getScore();
+        int minusResult = player1.getPoint() - player2.getPoint();
         if (minusResult == 1) score = new StringBuilder("Advantage player1");
         else if (minusResult == -1) score = new StringBuilder("Advantage player2");
         else if (minusResult >= 2) score = new StringBuilder("Win for player1");
@@ -68,7 +68,7 @@ public class TennisGame1 implements TennisGame {
 
     private String withSameScore() {
         StringBuilder score;
-        switch (player1.getScore()) {
+        switch (player1.getPoint()) {
             case 0:
                 score = new StringBuilder("Love-All");
                 break;
