@@ -2,8 +2,8 @@ package cn.xpbootcamp.tennis;
 
 public class TennisGame1 implements TennisGame {
 
-    private int m_score1 = 0;
-    private int m_score2 = 0;
+    private int player1Score = 0;
+    private int player2Score = 0;
     private String player1Name;
     private String player2Name;
 
@@ -14,58 +14,76 @@ public class TennisGame1 implements TennisGame {
 
     public void wonPoint(String playerName) {
         if (this.player1Name.equals(playerName))
-            m_score1 += 1;
+            player1Score += 1;
         else
-            m_score2 += 1;
+            player2Score += 1;
     }
 
     public String getScore() {
+        if (player1Score == player2Score) {
+            return withSameScore();
+        }
+
+        if (player1Score >= 4 || player2Score >= 4) {
+            return beyondScoreOf4();
+        }
+
+        return scoreBetween1To3();
+    }
+
+    private String scoreBetween1To3() {
         StringBuilder score = new StringBuilder();
         int tempScore;
-        if (m_score1 == m_score2) {
-            switch (m_score1) {
+        for (int i = 1; i < 3; i++) {
+            if (i == 1) tempScore = player1Score;
+            else {
+                score.append("-");
+                tempScore = player2Score;
+            }
+            switch (tempScore) {
                 case 0:
-                    score = new StringBuilder("Love-All");
+                    score.append("Love");
                     break;
                 case 1:
-                    score = new StringBuilder("Fifteen-All");
+                    score.append("Fifteen");
                     break;
                 case 2:
-                    score = new StringBuilder("Thirty-All");
+                    score.append("Thirty");
                     break;
-                default:
-                    score = new StringBuilder("Deuce");
+                case 3:
+                    score.append("Forty");
                     break;
+            }
+        }
+        return score.toString();
+    }
 
-            }
-        } else if (m_score1 >= 4 || m_score2 >= 4) {
-            int minusResult = m_score1 - m_score2;
-            if (minusResult == 1) score = new StringBuilder("Advantage player1");
-            else if (minusResult == -1) score = new StringBuilder("Advantage player2");
-            else if (minusResult >= 2) score = new StringBuilder("Win for player1");
-            else score = new StringBuilder("Win for player2");
-        } else {
-            for (int i = 1; i < 3; i++) {
-                if (i == 1) tempScore = m_score1;
-                else {
-                    score.append("-");
-                    tempScore = m_score2;
-                }
-                switch (tempScore) {
-                    case 0:
-                        score.append("Love");
-                        break;
-                    case 1:
-                        score.append("Fifteen");
-                        break;
-                    case 2:
-                        score.append("Thirty");
-                        break;
-                    case 3:
-                        score.append("Forty");
-                        break;
-                }
-            }
+    private String beyondScoreOf4() {
+        StringBuilder score;
+        int minusResult = player1Score - player2Score;
+        if (minusResult == 1) score = new StringBuilder("Advantage player1");
+        else if (minusResult == -1) score = new StringBuilder("Advantage player2");
+        else if (minusResult >= 2) score = new StringBuilder("Win for player1");
+        else score = new StringBuilder("Win for player2");
+        return score.toString();
+    }
+
+    private String withSameScore() {
+        StringBuilder score;
+        switch (player1Score) {
+            case 0:
+                score = new StringBuilder("Love-All");
+                break;
+            case 1:
+                score = new StringBuilder("Fifteen-All");
+                break;
+            case 2:
+                score = new StringBuilder("Thirty-All");
+                break;
+            default:
+                score = new StringBuilder("Deuce");
+                break;
+
         }
         return score.toString();
     }
