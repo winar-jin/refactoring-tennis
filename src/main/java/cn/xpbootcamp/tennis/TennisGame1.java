@@ -2,29 +2,27 @@ package cn.xpbootcamp.tennis;
 
 public class TennisGame1 implements TennisGame {
 
-    private int player1Score = 0;
-    private int player2Score = 0;
-    private String player1Name;
-    private String player2Name;
+    private Player player1;
+    private Player player2;
 
     public TennisGame1(String player1Name, String player2Name) {
-        this.player1Name = player1Name;
-        this.player2Name = player2Name;
+        this.player1 = new Player(player1Name, 0);
+        this.player2 = new Player(player2Name, 0);
     }
 
     public void wonPoint(String playerName) {
-        if (this.player1Name.equals(playerName))
-            player1Score += 1;
+        if (player1.getName().equals(playerName))
+            player1.wonPoint();
         else
-            player2Score += 1;
+            player2.wonPoint();
     }
 
     public String getScore() {
-        if (player1Score == player2Score) {
+        if (player1.getScore() == player2.getScore()) {
             return withSameScore();
         }
 
-        if (player1Score >= 4 || player2Score >= 4) {
+        if (player1.getScore() >= 4 || player2.getScore() >= 4) {
             return beyondScoreOf4();
         }
 
@@ -35,10 +33,10 @@ public class TennisGame1 implements TennisGame {
         StringBuilder score = new StringBuilder();
         int tempScore;
         for (int i = 1; i < 3; i++) {
-            if (i == 1) tempScore = player1Score;
+            if (i == 1) tempScore = player1.getScore();
             else {
                 score.append("-");
-                tempScore = player2Score;
+                tempScore = player2.getScore();
             }
             switch (tempScore) {
                 case 0:
@@ -60,7 +58,7 @@ public class TennisGame1 implements TennisGame {
 
     private String beyondScoreOf4() {
         StringBuilder score;
-        int minusResult = player1Score - player2Score;
+        int minusResult = player1.getScore() - player2.getScore();
         if (minusResult == 1) score = new StringBuilder("Advantage player1");
         else if (minusResult == -1) score = new StringBuilder("Advantage player2");
         else if (minusResult >= 2) score = new StringBuilder("Win for player1");
@@ -70,7 +68,7 @@ public class TennisGame1 implements TennisGame {
 
     private String withSameScore() {
         StringBuilder score;
-        switch (player1Score) {
+        switch (player1.getScore()) {
             case 0:
                 score = new StringBuilder("Love-All");
                 break;
